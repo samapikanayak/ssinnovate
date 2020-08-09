@@ -1,0 +1,49 @@
+{% extends 'userapp/base.html' %}
+{% load static %}
+{% block title %}
+
+{% if profile %}
+{{profile.full_name}}
+    
+{% endif %}
+
+{% if status %}
+    {{status.title}}
+{% endif %}
+    
+    
+{% endblock title %}
+{% block body %}
+
+{% if profile  %}
+<div class="container">
+            <p class="text-success" style="font-size:25px;">Alumini Name: <span class="text-primary">{{profile.full_name | title}}</span></p>
+            <p class="text-success" style="font-size:25px;">Contact Number: <span class="text-primary">{{profile.mobile}}</span></p>
+            <p class="text-success" style="font-size:25px;"> Year Of Passing: <span class="text-primary">{{profile.batch}}</span></p>
+            <p class="text-success" style="font-size:25px;">Sex: <span class="text-primary">{{profile.gender | title}}</span></p>
+    {% if profile.picture %}
+    <img src="{{profile.picture.url}}" alt="" style="height: 200px;width: 200px;">
+    {% else %}
+    <img src="{% static "userapp/images/avtar.png" %}" alt="" style="height: 200px;width: 200px;">
+    {% endif %}
+    
+    {% endif %}
+    <br> <br>
+</div>
+{% if status %}
+<div class="container">
+            <p class="text-success" style="font-size:25px;">Notes Title: <span class="text-primary">{{status.title}}</span></p>
+            <p class="text-success" style="font-size:25px;">Notes Description: <span class="text-primary">{{status.description}}</span></p>
+            <p class="text-success" style="font-size:25px;"> Posted by : <span class="text-primary">{{status.profile.full_name}} {{status.created | timesince}} ago</span></p>
+    
+    {% endif %} 
+</div>
+<button onclick="goBack()" style="margin-left: 500px;" class="btn btn-md btn-info">Go Back</button>
+<script>
+     function goBack() {
+        window.history.back();
+    }
+</script>
+{% endblock body %}
+        
+    

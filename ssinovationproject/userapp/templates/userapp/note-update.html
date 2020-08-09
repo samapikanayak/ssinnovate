@@ -1,0 +1,45 @@
+{% extends 'userapp/base.html' %}
+
+{% block title %}
+{{data.title}}
+{% endblock title %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-xl-8 col-lg-8">
+    <form action="" method="POST" class="form-group">
+        {% csrf_token %}
+        <span class="text-primary" style="font-size:25px;">Title:</span> <input type="text" class="form-control" name="title" id="" value="{{data.title}}"> <br>
+        <span class="text-primary" style="font-size:25px;"> Description:</span> <textarea class="form-control" name="description" id="" cols="30" rows="10">{{data.description}}</textarea>
+        <br>
+        <input type="submit" value="Update" class="btn btn-sm btn-danger"  Onclick="return ConfirmDelete();">
+        <a onclick="goBack()" class="btn btn-sm btn-success text-white">Cancel</a>
+    </form>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+<script>
+    function ConfirmDelete()
+    {
+        var x = confirm("Are you sure you want to Update this Note?");
+        if (x)
+            return true;
+        else
+            return false;
+    }
+    function goBack() 
+    {
+        window.history.back();
+    }
+</script>
+{% endblock body %}

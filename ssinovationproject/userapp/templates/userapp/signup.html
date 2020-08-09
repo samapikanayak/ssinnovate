@@ -1,0 +1,90 @@
+{% extends 'userapp/base.html' %}
+{% block title %}
+Registration
+{% endblock title %}
+
+
+
+
+{% block body %}
+
+
+<div class="container  mt-3">
+    <div class="card">
+        <h2 class="card-header text-center text-success" >Register</h2>
+        <div class="card-body">
+                <div class="container">
+
+
+                    <form action="" method="POST" class="jumbotron form-group" onsubmit="return validate()">
+                        {% for message in messages %}
+                            {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{message}}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-md-6 col-lg-6 text-primary">
+                                Email: <input class="form-control" type="email" name="email" id="" required title="example@example.com" pattern="[a-zA-Z][a-zA-Z0-9]*[@][a-zA-Z]+[.][a-zA-Z]+"> <br><br>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xl-6 col-xs-6 text-primary">
+                                Full Name: <input type="text" class="form-control" required name="fullname" id=""> <br><br>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-lg-6 mx-auto text-primary">
+                               <label for="" class="text-center"> Mobile Number</label> <input class="form-control" type="text" name="mobile" id="" required pattern="[6-9][0-9]{9}" minlength="10" title="Number should starts with 6 or 7 or 8 or 9" maxlength="10"> <br><br>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-lg-6 col-sm-6 col-xl-6 col-xs-6 text-primary">
+                                Password: <input class="form-control" type="password" name="pwd1" id="pwd1" required> <br><br>
+                            </div>
+
+                            <div class="col-lg-6 col-sm-6 col-xl-6 col-xs-6 text-primary">
+                                Confirm Password: <input class="form-control" type="password" name="cpassword" id="pwd2" required>
+                                <br><br>
+                            </div>
+                        </div>
+                        <span class="text-primary">Year Of Passing:</span>
+                        {% include 'userapp/passing.html' %}
+                        <br><br>
+                        <span class="text-primary">Gender:</span>
+                        <select name="gender" id="">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select><br><br>
+                        <input type="submit" class="btn btn-success" value="Next">
+            </h5>
+            <br><br>
+            <span class="text-center text-primary" style="font-size:15px;">Alreday Have Account ?</span> <a
+                href="{% url "login" %}" class="btn btn-md btn-outline-primary">Login</a>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<br><br>
+<script>
+    function validate(){
+        pwd1 = document.getElementById("pwd1").value
+        pwd2 = document.getElementById("pwd2").value
+        if (pwd1 != pwd2){
+            alert("Password should be matched")
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+</script>
+{% endblock body %}

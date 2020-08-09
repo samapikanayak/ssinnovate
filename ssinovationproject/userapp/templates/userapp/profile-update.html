@@ -1,0 +1,101 @@
+{% extends 'userapp/base.html' %}
+
+{% block title %}
+
+{% endblock title %}
+
+
+{% block body %}
+
+<div class="container-fluid mt-5 px-5">
+
+    <div class="row">
+        
+        <div class="col-lg-4 col-md-4">
+            <form action="" method="POST" class="form-group">
+                
+                {% csrf_token %}
+                Full Name: <input type="text" class="form-control" name="fullname" id="" value="{{data.full_name}}"> <br>
+                Email: <input type="text"  class="form-control" name="email" id="" value="{{data.email}}"> <br>
+                <pre>
+                    <input type="submit" class="btn btn-md btn-outline-danger" Onclick="return ConfirmDelete();" value="Update" style="margin: 0px 10px;">
+                </form>
+                     <button onclick="goBack()" class="btn btn-md btn-outline-info">Cancel</button>
+            </pre>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <form action="/change-password/" method="POST" class="form-group" onsubmit="return validate()">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% if message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% csrf_token %}
+                Old Password: <input type="password" class="form-control" name="password" id=""> <br>
+                New Password: <input type="password" class="form-control" name="newpassword" id="pwd1"> <br>
+                Confirm Password: <input type="password" class="form-control" name="" id="pwd2"> <br>
+                <input type="submit" class="btn btn-md btn-outline-success" value="Change Password">
+            </form>
+        </div>
+
+        <div class="col-lg-4 col-md-4">
+            <form action="{% url "upload" %}" method="POST" enctype="multipart/form-data" class="form-group">
+                {% csrf_token %}
+                {{form.as_p}}
+                {% if data.picture %}
+                <input type="submit" value="Change Profile Picture" class="btn btn-md btn-outline-primary">
+                <a href="{% url "delete-picture" %}" class="btn btn-md btn-danger" Onclick="return ConfirmDeletePicture();">Delete Picture</a>
+                {% else %}
+                <input type="submit" value="Upload" class="btn btn-md btn-outline-primary">
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+    function validate() {
+        pwd1 = document.getElementById("pwd1").value
+        pwd2 = document.getElementById("pwd2").value
+        if (pwd1 != pwd2) {
+            alert("Password should be matched")
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function ConfirmDelete() {
+    var x = confirm("Are you sure to Update?");
+    if (x)
+      return true;
+    else
+      return false;
+  }
+  
+    function ConfirmDeletePicture(){
+    var x = confirm("Are you sure to Delete Profile Picture ?");
+    if (x)
+      return true;
+    else
+      return false;
+  }
+  
+</script>
+{% endblock body %}

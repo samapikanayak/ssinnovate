@@ -1,0 +1,112 @@
+{% extends 'userapp/base.html' %}
+{% load static %}
+{% block title %} Welcome {{user.profile.full_name | title}} {% endblock title %}
+{% block body %}
+<main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
+  {% for message in messages %}
+  {% if message.tags == "error" %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+  {% if message.tags == "success" %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+  {% endfor %}
+  <div class="jumbotron jumboturn_name bg-info mt-2 text-white">
+    {% if user.profile.gender == "male" %}
+    <h3>Welcome Mr. {{user.profile.full_name}} to Alumini Group</h3>
+
+    {% elif user.profile.gender == "female" %}
+    <h3>Welcome Ms. {{user.profile.full_name}} to Alumini Group</h3>
+    {% else %}
+    <h3>Welcome {{user.profile.full_name}} to Alumini Group</h3>
+    {% endif %}
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <form action="{% url "add-status" %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="title" class="text-primary" style="font-size: 20px;">Title</label>
+              <input type="text" class="form-control" placeholder="Title" name="title" id="" required>
+            </div>
+
+            <div class="form-group">
+              <label for="pwd" class="text-primary" style="font-size: 20px;">Description</label>
+              <textarea maxlength="10000000" required name="description" class="form-control" id="" cols="30" rows="5"
+                placeholder="Description..."></textarea>
+            </div>
+
+            <input type="submit" value="Add Note" class="btn btn-primary">
+          </form>
+          <br>
+          <h3 class="text-center text-success">
+            
+            My Notes ({{mynotes.count}})
+          </h3>
+          {% for i in mynotes %}
+          <a class="text-primary" href="{% url "update" i.uid %}" style="font-size: 20px;">{{i.title| truncatewords:"5"}}</a>
+          <p>{{i.description | truncatewords:"2"}}</p>
+          <a href="{% url "delete" i.uid %}" class="btn btn-md btn-danger" Onclick="return ConfirmDelete();"
+            type="submit" name="actiondelete" value="1">Delete</a>
+          <br>
+          <br>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-body notes_content">
+          <div class="jumbotron jumboturn_notes bg-primary text-white">
+            <h4>Batch Notes</h4>
+          </div>
+          {% for i in data %}
+          {% if i.profile.picture %}
+          <img class="profile_pic" src="{{i.profile.picture.url}}"
+            style="border-radius: 50% 50%;height: 100px;width: 100px;" alt="">
+          {% else %}
+          <img class="profile_pic" src="{% static "userapp/images/avtar.png" %}" alt=""
+            style="border-radius: 50% 50%;height: 100px;width: 100px;">
+          {% endif %}
+
+          <span class="notes_para"><span class="text-info"
+              style="font-size:20px;">{{i.profile.full_name | title}}</span></span>
+          <span class="notes_para">{{i.updated| timesince}} Ago</span> <br>
+          <p class="text-center text-primary" style="font-size: 25px;"> {{i.title}} </p>
+          <span class="text-center" style="font-size: 18px;">{{i.description}}</span> <br> <br>
+          {% empty %}
+          <p class="notes_para text-danger">No Available Notes</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+<script>
+  function ConfirmDelete() {
+    var x = confirm("Are you sure you want to delete this Note?");
+    if (x)
+      return true;
+    else
+      return false;
+  }
+</script>
+
+{% endblock body %}

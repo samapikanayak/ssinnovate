@@ -1,0 +1,82 @@
+{% extends 'userapp/base.html' %}
+
+{% block title %}
+    Search Result of {{search}}
+{% endblock title %}
+    
+{% block body %}
+    
+
+<h3 class="text-primary text-center">Search Results of <span style="color: indigo;font-size: 50px;">{{search}}</span></h3>
+    
+    {% if profile_data or notes_data%}
+    {% else %}
+        <p class="text-danger text-center" style="font-size: 40px;">No Result Found</p>
+        <div class="text-center">
+            <button onclick="goBack()" class="btn btn-sm btn-info">Go Back</button>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                {% if profile_data %}
+       
+                {% if profile_data.count == 1 %}
+                     <h2 class="text-success">Alumini Member ({{profile_data.count}})</h2>
+                 {% else %}
+                     <h2 class="text-success">Alumini Members ({{profile_data.count}})</h2>
+                {% endif %}
+                    
+                     {% for p in profile_data %}
+                         
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>{{forloop.counter}}</th>
+                            <th scope="row"><a href="{% url "detail-profile" p.uid %}">{{p.full_name}}</a></th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    {% endif %}
+
+            </div>
+            {% if notes_data %}
+            <div class="col-md-6">
+                    {% if notes_data.count == 1 %}
+                        <h2 class="text-success">Note ({{notes_data.count}})</h2>
+                    {% else %}
+                        <h2 class="text-success">Notes ({{notes_data.count}})</h2>
+                    {% endif %}
+                         {% for q in notes_data %}
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th>{{forloop.counter}}</th>
+                                        <th scope="row"><a href="{% url "detail-status" q.uid %}">{{q.title}}</a></th>
+                                    </tr>
+                         {% endfor %}
+                            </tbody>
+                            </table>
+                            
+                    {% endif %}
+
+                </div>
+                {% if profile_data or notes_data%}
+                <div class="text-center">
+                    <button onclick="goBack()" class="btn btn-sm btn-info" style="margin-left: 500px;">Go Back</button>
+                </div>
+                {% endif %}
+        </div>
+        
+    </div>
+    <script>
+    function goBack() {
+      window.history.back();
+    }
+    </script>
+
+
+
+    {% endblock body %}
